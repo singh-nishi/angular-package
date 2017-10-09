@@ -1,18 +1,14 @@
 export declare class CustomKeyboardComponent {
+    CapsLock: boolean;
     keys: string[];
-    constructor();
-    keyboardKeys: any;
-    str: string;
-    inputTextArea: any;
+    inputstr: string;
     caretPos: number;
-    checkevent: boolean;
-    onKeypress(event: any): void;
-    click(key: any, inputTextArea: any): void;
-    closeApp(): void;
-    onkeydown(event: any): void;
-    onkeyup(event: any): void;
-    show(): void;
+    inputTextArea: any;
+    constructor();
+    ngOnInit(): void;
+    keyPress(event: any): void;
     Caps(): void;
+    click(item: any, inputTextArea: any): void;
     getCaretPos(oField: any): void;
     setSelectionRange(selectionStart: any, selectionEnd: any): void;
 }

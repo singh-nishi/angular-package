@@ -4,88 +4,27 @@ import { FormsModule } from '@angular/forms';
 
 var CustomKeyboardComponent = (function () {
     function CustomKeyboardComponent() {
+        this.CapsLock = false;
         this.keys = ["Esc", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "bksp", "7", "8", "9", "Caps", "a", "s", "d", "f", "g", "h", "j", "k", "l", "Enter", "4", "5", "6", "<--", "z", "x", "c", "v", "b", "n", "m", "-", "-->", "1", "2", "3", "Spacebar", "0", "Enter"];
-        this.keyboardKeys = {
-            keys: ["Esc", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "bksp", "7", "8", "9", "Caps", "a", "s", "d", "f", "g", "h", "j", "k", "l", "Enter", "4", "5", "6", "<--", "z", "x", "c", "v", "b", "n", "m", "-", "-->", "1", "2", "3", "Spacebar", "0", "Enter"],
-            capslock: false,
-        };
-        this.str = "";
+        this.inputstr = "";
         this.caretPos = 0;
-        this.checkevent = false;
     }
     /**
-     * @param {?} event
      * @return {?}
      */
-    CustomKeyboardComponent.prototype.onKeypress = function (event) {
-        //this.str = event.target.value;
-        this.checkevent = true;
-        // this.onkeyup(this.crevent);
-        this.onkeyup(event);
-        // document.getElementById('input')
-        //alert(event.key);
-    };
-    /**
-     * @param {?} key
-     * @param {?} inputTextArea
-     * @return {?}
-     */
-    CustomKeyboardComponent.prototype.click = function (key, inputTextArea) {
-        this.getCaretPos(inputTextArea); //Get Cursor Position From Text Area
-        if (key === "Esc" || key === "Enter") {
-            //this.dialog.close();
-            this.closeApp();
-        }
-        else {
-            if (key !== "bksp" && key !== "Caps" && key !== "Spacebar" && key !== "-->" && key !== "<--") {
-                //alert('lenth' + this.str.length + 'carsor' + this.caretPos);
-                if (this.str.length > this.caretPos) {
-                    var /** @type {?} */ tempstr = this.str.substring(0, this.caretPos);
-                    tempstr += key;
-                    this.str = tempstr + this.str.substring(this.caretPos, this.str.length);
-                    this.caretPos--;
-                    this.inputTextArea = inputTextArea;
-                    this.setSelectionRange(this.caretPos, this.caretPos);
-                }
-                else if (this.str.length === this.caretPos) {
-                    this.str += key;
-                }
-            }
-            else if (key === "Spacebar") {
-                this.str += " ";
-            }
-            else if (key === "Caps") {
-                this.Caps();
-            }
-            else if (key === "-->") {
-                this.caretPos++;
-                this.setSelectionRange(this.caretPos, this.caretPos); //Rigth shift
-                //alert('lenth' + this.str.length + 'carsor' + this.caretPos);
-            }
-            else if (key === "<--") {
-                this.caretPos--;
-                this.setSelectionRange(this.caretPos, this.caretPos); //Lift Shift
-                //alert('lenth' + this.str.length + 'carsor' + this.caretPos);
-            }
-            else if (key === "bksp") {
-                this.str = this.str.substring(0, this.str.length - 1);
-            }
-        }
-        document.getElementById('input').focus(); //input focus..
-    };
-    /**
-     * @return {?}
-     */
-    CustomKeyboardComponent.prototype.closeApp = function () {
-        alert("I'm leaving the app!");
+    CustomKeyboardComponent.prototype.ngOnInit = function () {
+        this.inputstr = "";
+        this.CapsLock = false;
+        this.keys = ["Esc", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "bksp", "7", "8", "9", "Caps", "a", "s", "d", "f", "g", "h", "j", "k", "l", "Enter", "4", "5", "6", "<--", "z", "x", "c", "v", "b", "n", "m", "-", "-->", "1", "2", "3", "Spacebar", "0", "Enter"];
+        this.caretPos = 0;
     };
     /**
      * @param {?} event
      * @return {?}
      */
-    CustomKeyboardComponent.prototype.onkeydown = function (event) {
+    CustomKeyboardComponent.prototype.keyPress = function (event) {
         if (event.keyCode == "27" || event.keyCode == "13") {
-            this.str = event.target.value;
+            console.log(String.fromCharCode(event.keyCode));
         }
         else if (event.keyCode == "20") {
             this.Caps();
@@ -93,30 +32,15 @@ var CustomKeyboardComponent = (function () {
         else if (event.keyCode == "17") {
         }
         else {
-            console.log("onkeydown", event.target.value);
-            // this.str = event.target.value;
+            this.inputstr = event.target.value;
         }
-    };
-    /**
-     * @param {?} event
-     * @return {?}
-     */
-    CustomKeyboardComponent.prototype.onkeyup = function (event) {
-        console.log("onkeyup", event.target.value);
-        this.str = event.target.value;
-    };
-    /**
-     * @return {?}
-     */
-    CustomKeyboardComponent.prototype.show = function () {
-        alert(this.str);
     };
     /**
      * @return {?}
      */
     CustomKeyboardComponent.prototype.Caps = function () {
-        if (this.keyboardKeys.CapsLock) {
-            this.keyboardKeys.CapsLock = !this.keyboardKeys.CapsLock;
+        if (this.CapsLock) {
+            this.CapsLock = !this.CapsLock;
             for (var /** @type {?} */ i = 0; i <= 36; i++) {
                 if (i >= 1 && i <= 10) {
                     this.keys[i] = this.keys[i].toLowerCase();
@@ -130,7 +54,7 @@ var CustomKeyboardComponent = (function () {
             }
         }
         else {
-            this.keyboardKeys.CapsLock = !this.keyboardKeys.CapsLock;
+            this.CapsLock = !this.CapsLock;
             for (var /** @type {?} */ i = 0; i <= 36; i++) {
                 if (i >= 1 && i <= 10) {
                     this.keys[i] = this.keys[i].toUpperCase();
@@ -145,15 +69,57 @@ var CustomKeyboardComponent = (function () {
         }
     };
     /**
+     * @param {?} item
+     * @param {?} inputTextArea
+     * @return {?}
+     */
+    CustomKeyboardComponent.prototype.click = function (item, inputTextArea) {
+        this.getCaretPos(inputTextArea); //Get Cursor Position From Text Area
+        if (item === "Esc" || item === "Enter") {
+            console.log(item);
+        }
+        else {
+            if (item !== "bksp" && item !== "Caps" && item !== "Spacebar" && item !== "-->" && item !== "<--") {
+                // console.log('lenth' + this.inputstr.length + 'carsor' + this.caretPos);
+                if (this.inputstr.length > this.caretPos) {
+                    var /** @type {?} */ tempstr = this.inputstr.substring(0, this.caretPos);
+                    tempstr += item;
+                    this.inputstr = tempstr + this.inputstr.substring(this.caretPos, this.inputstr.length);
+                    this.caretPos--;
+                    this.inputTextArea = inputTextArea;
+                    this.setSelectionRange(this.caretPos, this.caretPos);
+                }
+                else if (this.inputstr.length === this.caretPos) {
+                    this.inputstr += item;
+                }
+            }
+            else if (item === "Spacebar") {
+                this.inputstr += " ";
+            }
+            else if (item === "Caps") {
+                this.Caps();
+            }
+            else if (item === "-->") {
+                this.setSelectionRange(this.caretPos, this.caretPos); //Rigth shift
+                //alert('lenth' + this.str.length + 'carsor' + this.caretPos);
+            }
+            else if (item === "<--") {
+                this.caretPos--;
+                this.setSelectionRange(this.caretPos, this.caretPos); //Lift Shift
+                //alert('lenth' + this.str.length + 'carsor' + this.caretPos);
+            }
+            else if (item === "bksp") {
+                this.inputstr = this.inputstr.substring(0, this.inputstr.length - 1);
+            }
+        }
+        document.getElementById('input').focus(); //input focus...
+    };
+    /**
      * @param {?} oField
      * @return {?}
      */
     CustomKeyboardComponent.prototype.getCaretPos = function (oField) {
         this.inputTextArea = oField;
-        if (event != null && this.checkevent) {
-            this.onkeyup(event);
-            this.checkevent = false;
-        }
         if (oField.selectionStart || oField.selectionStart == '0') {
             this.caretPos = oField.selectionStart;
         }
@@ -181,8 +147,9 @@ var CustomKeyboardComponent = (function () {
 CustomKeyboardComponent.decorators = [
     { type: Component, args: [{
                 selector: 'custom-keyboard-component',
-                template: "  \n  <div class=\"keyboard\">\n  <div class=\"keys-button-group\" >\n    <input id=\"input\" #inputTextArea focus=\"true\" (click)=\"getCaretPos(inputTextArea)\" (keyup)=\"getCaretPos(inputTextArea)\" (keydown)=\"onkeydown($event)\" (keypress)=\"onKeypress($event)\"\n    [ngModel]=\"str\" style=\"width:94%;margin-bottom: 2%;margin-top: 2%;margin-left: 2%\" />\n    <div *ngFor=\"let key of keys\" class=\"key\" (click)=\"click(key,inputTextArea)\">\n  {{key}}\n</div>\n</div>\n</div>\n",
-                styles: [".keyboard{ height: 230px; width: 100%; float: left; background-color: aqua; color: #eee; } .key{ width: calc((100%)/16);  height: 50%; display:block; background-color:#333; text-align: left; padding-left: 8px; line-height: 29px; border-radius:2px; float:left;  margin-left: 2px; margin-bottom:2px; cursor: pointer; transition: box-shadow 0.7s ease; } .keys-button-group{ min-width: 990px; }"]
+                template: "  \n  <div class=\"keyboard\">\n  <input id=\"input\" #inputTextArea (click)=\"getCaretPos(inputTextArea)\" (keyup)=\"getCaretPos(inputTextArea)\" [ngModel]=\"inputstr\" style=\"width:90%;margin-left: 17px;\" />\n  <br>\n  <br>\n  <div class=\"button-group\">\n    <button *ngFor=\"let key of keys\" class=\"button\" (click)=\"click(key,inputTextArea)\">\n      {{key}}\n    </button>\n  </div>\n</div>\n",
+                styles: [".button-group{ height: 100px; width: calc(100% - 100px); float: left; min-width: 990px; } .button{ width:calc((100%)/15); height: 50%; padding: 0px; background-color: black; color: white; } .keyboard{ height: 230px; width: 100%; float: left; background-color: aqua; padding-top: 18px; } "],
+                host: { '(window:keyup)': 'keyPress($event)' }
             },] },
 ];
 /**
